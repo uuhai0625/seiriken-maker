@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<script>
+  (function() {
+    var GA_ID = 'G-WQV4GCB52H';
+    var isLocalDev = ['localhost', '127.0.0.1', ''].includes(location.hostname);
+    if (isLocalDev) return;
+    try { if (/[?&]no_ga=0/.test(location.search)) localStorage.removeItem('no_ga'); if (/[?&]no_ga=1/.test(location.search)) localStorage.setItem('no_ga', '1'); if (localStorage.getItem('no_ga') === '1') return; } catch (e) {}
+    var gaQ = new URLSearchParams(location.search); if (gaQ.get('obs') === '1' || gaQ.get('no_ga') === '1') return;
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+    document.head.appendChild(s);
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', GA_ID);
+    document.addEventListener('click', function(e) {
+      var a = e.target && e.target.closest ? e.target.closest('a[href*="booth.pm"]:not([href*="/search"])') : null;
+      if (!a) return;
+      gtag('event', 'booth_click', { link_url: a.href, link_id: a.id || '', link_text: (a.textContent || '').trim().slice(0, 40) });
+    });
+  })();
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="整理券・番号札を無料で作成・印刷(登録不要)。はじめの番号と枚数を入れるだけで、No.001のような通し番号つきの整理券をA4に8〜40枚並べて印刷できます。イベント・お店の行列・受付・抽選会に。タイトルや注意書き、色も選べます。">
+<link rel="canonical" href="https://uuhai0625.github.io/seiriken-maker/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:title" content="整理券・番号札メーカー|通し番号つきの整理券を無料で作成・A4に並べて印刷(テンプレート)">
+<meta property="og:description" content="整理券・番号札を無料で作成・印刷(登録不要)。はじめの番号と枚数を入れるだけで、No.001のような通し番号つきの整理券をA4に8〜40枚並べて印刷できます。イベント・お店の行列・受付・抽選会に。タイトルや注意書き、色も選べます。">
+<meta property="og:url" content="https://uuhai0625.github.io/seiriken-maker/">
+<meta property="og:image" content="https://uuhai0625.github.io/seiriken-maker/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<title>整理券・番号札メーカー|通し番号つきの整理券を無料で作成・A4に並べて印刷(テンプレート)</title>
+<style>
+  :root {
+    --bg: #f4f7f6;
+    --panel: #ffffff;
+    --border: #d6e3df;
+    --field-border: #66807a;
+    --text: #1f2a28;
+    --muted: #51625e;
+    --accent: #0f766e;
+    --accent-dark: #0b4f4a;
+    --soft: #e3f3f0;
+    --ng: #b3261e;
+    --locked: #b9cbc6;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+  header { background: linear-gradient(135deg, var(--accent), var(--accent-dark)); color: #fff; padding: 24px 20px 18px; text-align: center; }
+  header h1 { margin: 0 0 6px; font-size: 1.35rem; }
+  header p { margin: 0; font-size: .9rem; }
+  main { max-width: 1040px; margin: 0 auto; padding: 22px 16px 50px; }
+  main > * { min-width: 0; }
+  .layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; align-items: start; }
+  .layout > div { min-width: 0; }
+  .layout > .col-pv { position: sticky; top: 12px; }
+  section.card { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px; margin-bottom: 18px; }
+  section.card h2 { margin: 0 0 6px; font-size: 1.05rem; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .desc { color: var(--muted); font-size: .84rem; margin: 0 0 12px; }
+  .fine { color: var(--muted); font-size: .8rem; margin: 8px 0 0; }
+  .badge { display: inline-block; font-size: .7rem; padding: 2px 8px; border-radius: 999px; background: #fff1cc; color: #7a5600; font-weight: bold; }
+  .hidden { display: none !important; }
+  label.field { display: block; margin-bottom: 12px; }
+  .lbl { font-size: .85rem; font-weight: bold; display: block; }
+  .hint { font-size: .78rem; color: var(--muted); font-weight: normal; display: block; margin-top: 2px; }
+  input[type=text], input[type=number], select, textarea { width: 100%; margin-top: 5px; padding: 8px 10px; min-height: 44px; border: 1px solid var(--field-border); border-radius: 8px; font-size: 1rem; font-family: inherit; background: #fff; color: var(--text); }
+  textarea { min-height: 70px; line-height: 1.5; resize: vertical; }
+  .row2 { display: flex; gap: 12px; }
+  .row2 > * { flex: 1; min-width: 0; }
+  label.check { display: flex; align-items: center; gap: 8px; min-height: 44px; font-size: .86rem; cursor: pointer; }
+  label.check input { width: 20px; height: 20px; margin: 0; flex-shrink: 0; }
+  .btn-row { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+  .btn { min-height: 44px; padding: 9px 16px; border-radius: 8px; font-size: .88rem; cursor: pointer; border: 1px solid var(--field-border); background: #fff; color: var(--text); font-family: inherit; }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: bold; }
+  .btn:disabled { opacity: .5; cursor: not-allowed; }
+  .btn:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, a:focus-visible { outline: 2px solid var(--accent-dark); outline-offset: 2px; }
+  .btn-row .btn { flex: 1; }
+  .status { font-size: .82rem; color: var(--muted); margin-top: 6px; min-height: 1.2em; }
+  .status.err, .err { color: var(--ng); font-weight: bold; }
+  .preview { border: 1px solid var(--border); border-radius: 8px; background: #e9efed; padding: 14px; display: flex; justify-content: center; overflow: hidden; }
+  .preview .tk { box-shadow: 0 2px 10px rgba(0,0,0,.12); }
+  .info { font-size: .84rem; margin-top: 8px; }
+  .guide { font-size: .86rem; }
+  .guide ul, .guide ol { padding-left: 1.3em; margin: 6px 0; }
+  .guide li { margin: 4px 0; }
+  .locked-panel { border: 1px dashed var(--locked); border-radius: 10px; padding: 16px; text-align: center; color: var(--muted); background: #f8fcfb; }
+  .locked-panel .lead { color: var(--text); font-weight: bold; }
+  .locked-panel .feat-list { text-align: left; max-width: 600px; margin: 10px auto; font-size: .85rem; padding-left: 1.2em; }
+  .buy-btn { display: inline-block; margin-top: 8px; background: var(--accent-dark); color: #fff; font-weight: bold; padding: 11px 22px; border-radius: 999px; text-decoration: none; font-size: .9rem; }
+
+  /* ===== 整理券(印刷と見本で共通。大きさはmm) ===== */
+  .tk { --c1: #1f2a28; --c2: #f2f2f2; background: #fff; color: #222; border: 0.5mm solid var(--c1); border-radius: 1.5mm; display: flex; overflow: hidden; font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif; }
+  .tk .main { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 3% 4%; }
+  .tk .tt { font-weight: 900; color: #fff; background: var(--c1); border-radius: 1mm; padding: 0 3mm; line-height: 1.4; white-space: nowrap; overflow: hidden; max-width: 100%; }
+  .tk .no { font-weight: 900; color: var(--c1); line-height: 1.05; white-space: nowrap; letter-spacing: .02em; }
+  .tk .no small { font-size: .42em; font-weight: bold; margin-right: .15em; }
+  .tk .sub { color: #333; line-height: 1.3; }
+  .tk .sub div { white-space: nowrap; overflow: hidden; }
+  .tk .stub { border-left: 0.4mm dashed var(--c1); background: var(--c2); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 2%; }
+  .tk .stub .sl { color: #555; line-height: 1.2; }
+  .tk .stub .sn { font-weight: 900; color: var(--c1); line-height: 1.1; white-space: nowrap; }
+  .tk.t-simple { --c1: #1f2a28; --c2: #f2f2f2; }
+  .tk.t-pink { --c1: #c23c72; --c2: #fdeef4; }
+  .tk.t-wa { --c1: #8c1d2c; --c2: #f8efe6; }
+  .tk.t-blue { --c1: #1f4e9c; --c2: #eaf1fb; }
+  .tk.t-custom { --c1: var(--cc, #0f766e); --c2: #f4f4f4; }
+
+  #printArea .page { position: relative; overflow: hidden; break-after: page; page-break-after: always; display: grid; justify-content: center; align-content: center; }
+  #printArea .page:last-child { break-after: auto; page-break-after: auto; }
+  #printArea .slot { display: flex; align-items: center; justify-content: center; border: 0.2mm dashed #bbb; }
+  
+  footer { max-width: 1040px; margin: 0 auto; padding: 0 16px 40px; font-size: .8rem; color: var(--muted); }
+  footer a { color: var(--muted); }
+  @media screen { #printArea { display: none; } }
+  @media print {
+    body { background: #fff; }
+    body > *:not(#printArea) { display: none !important; }
+    .tk { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+  @media (max-width: 820px) {
+    .layout { grid-template-columns: minmax(0, 1fr); }
+    .layout > .col-pv { position: static; }
+  }
+  @media (max-width: 600px) {
+    .row2 { flex-direction: column; gap: 0; }
+    section.card { padding: 16px 14px; }
+  }
+</style>
+<!--ANSHIN_CSS_START--><style>:root{--anshin-w:1008px;--anshin-pad:16px}.anshin-strip,.anshin{box-sizing:border-box;width:min(var(--anshin-w),calc(100% - 2 * var(--anshin-pad)));margin-left:auto;margin-right:auto}.anshin-strip{list-style:none;margin-top:10px;margin-bottom:0;padding:0;display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;font-size:.8rem;line-height:1.5}.anshin-strip li{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border:1px solid rgba(20,120,90,.45);border-radius:999px;background:rgba(20,120,90,.07)}.anshin-strip li.anshin-more{border:0;background:none;padding:3px 2px}.anshin-strip a,.anshin a{color:inherit}.anshin{margin-top:18px;margin-bottom:18px;padding:14px 18px;border:1px solid rgba(20,120,90,.45);border-radius:10px;background:rgba(20,120,90,.05);font-size:.86rem;line-height:1.7}.anshin h2{font-size:1rem;margin:0 0 6px}.anshin p{margin:0 0 6px}.anshin ul{margin:0;padding-left:1.2em}.anshin li{margin:3px 0}.anshin details{margin-top:6px}.anshin summary{cursor:pointer;font-weight:bold}.anshin .anshin-meta{margin:8px 0 0;font-size:.8rem;opacity:.85}@media print{.anshin,.anshin-strip{display:none!important}}</style><!--ANSHIN_CSS_END-->
+<!--UPSELL_CSS_START--><style>.upsell-top{box-sizing:border-box;width:min(var(--anshin-w,880px),calc(100% - 2 * var(--anshin-pad,16px)));margin:12px auto 0;font-size:.85rem;line-height:1.6}.upsell-top a{color:inherit}.upsell-assure{list-style:none;margin:12px 0 10px;padding:0;display:flex;flex-wrap:wrap;gap:6px 8px;font-size:.8rem;line-height:1.5}.upsell-assure li{padding:3px 10px;border:1px solid rgba(20,120,90,.45);border-radius:12px;background:rgba(20,120,90,.06)}.upsell-terms{margin:8px 0 0;font-size:.78rem;line-height:1.6;opacity:.85}.upsell-toast{position:fixed;left:50%;bottom:12px;transform:translateX(-50%);z-index:9999;box-sizing:border-box;width:min(520px,calc(100% - 24px));padding:14px 56px 14px 16px;border-radius:12px;background:#fff;color:#222;border:1px solid #c9c2d6;box-shadow:0 6px 24px rgba(0,0,0,.18);font-size:.88rem;line-height:1.6}.upsell-toast p{margin:0 0 6px;font-weight:bold}.upsell-toast ul{margin:0 0 10px;padding-left:1.2em}.upsell-toast li{margin:2px 0}.upsell-toast .upsell-note{display:block;margin-top:6px;font-size:.75rem;color:#555}.upsell-toast .upsell-go{display:inline-flex;align-items:center;min-height:44px;padding:0 18px;border-radius:8px;background:#c9283e;color:#fff;font-weight:bold;text-decoration:none}.upsell-toast.upsell-calm .upsell-go{background:#3f4a63}.upsell-toast .upsell-go:focus-visible,.upsell-toast .upsell-x:focus-visible{outline:3px solid #2560c4;outline-offset:2px}.upsell-toast .upsell-x{position:absolute;top:4px;right:4px;width:44px;height:44px;border:0;border-radius:8px;background:transparent;color:#555;font-size:1.3rem;line-height:1;cursor:pointer}.upsell-inline{white-space:nowrap;color:inherit;text-decoration:underline;text-underline-offset:2px}@media print{.upsell-top,.upsell-assure,.upsell-terms,.upsell-toast,.upsell-inline{display:none!important}}</style><!--UPSELL_CSS_END-->
+<!--JSONLD_START--><script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"整理券・番号札メーカー(無料の整理券作成ツール)","url":"https://uuhai0625.github.io/seiriken-maker/","description":"整理券・番号札を無料で作成・印刷(登録不要)。はじめの番号と枚数を入れるだけで、No.001のような通し番号つきの整理券をA4に8〜40枚並べて印刷できます。イベント・お店の行列・受付・抽選会に。タイトルや注意書き、色も選べます。","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","inLanguage":"ja","offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},"author":{"@type":"Person","name":"uuhai0625","url":"https://uuhai0625.github.io/"}}</script><!--JSONLD_END-->
+</head>
+<body>
+
+<header>
+  <h1>整理券・番号札メーカー(無料の整理券作成ツール)</h1>
+  <p>通し番号つきの整理券や番号札を、A4にきれいに並べてそのまま印刷。イベント・お店の行列・受付・抽選会の番号に。登録不要・ブラウザだけで使えます</p>
+</header>
+<!--ANSHIN_STRIP_START-->
+<ul class="anshin-strip" aria-label="データの扱い">
+  <li><span aria-hidden="true">✓</span> 入力内容はこの端末の中だけで処理</li>
+  <li><span aria-hidden="true">✓</span> 登録・ログイン不要</li>
+  <li><span aria-hidden="true">✓</span> 仕組みを公開中</li>
+  <li class="anshin-more"><a href="#anshin">データの扱いをくわしく</a></li>
+</ul>
+<!--ANSHIN_STRIP_END-->
+<!--UPSELL_TOP_START--><p class="upsell-top no-print" id="upsellTop">このページは無料のまま使えます。機能を増やしたい方は <a href="#pro-section">買い切り版(¥100・1回払い)<span aria-hidden="true"> ↓</span></a></p><!--UPSELL_TOP_END-->
+
+<main>
+<div class="layout">
+<div>
+
+  <section class="card" id="num-card">
+    <h2>① 番号</h2>
+    <div class="row2">
+      <label class="field">
+        <span class="lbl">はじめの番号</span>
+        <input type="number" id="in-start" min="0" max="99999" step="1" value="1" inputmode="numeric" data-save>
+      </label>
+      <label class="field">
+        <span class="lbl">枚数</span>
+        <input type="number" id="in-count" min="1" max="100" step="1" value="50" inputmode="numeric" data-save>
+        <span class="hint" id="countHint">1〜100枚</span>
+      </label>
+    </div>
+    <div class="row2">
+      <label class="field">
+        <span class="lbl">番号の前につける文字</span>
+        <input type="text" id="in-prefix" maxlength="6" value="No." placeholder="例: No. / A- / 受付" data-save>
+        <span class="hint">いらなければ空にします</span>
+      </label>
+      <label class="field">
+        <span class="lbl">けた数(0でうめる)</span>
+        <select id="in-digits" data-save>
+          <option value="0">うめない(1, 2, 3…)</option>
+          <option value="2">2けた(01, 02…)</option>
+          <option value="3" selected>3けた(001, 002…)</option>
+          <option value="4">4けた(0001…)</option>
+        </select>
+      </label>
+    </div>
+    
+  </section>
+
+  <section class="card" id="text-card">
+    <h2>② 文字と見た目</h2>
+    <label class="field">
+      <span class="lbl">いちばん上の文字</span>
+      <input type="text" id="in-title" maxlength="16" value="整理券" placeholder="例: 整理券 / 番号札 / 抽選券" data-save>
+    </label>
+    <label class="field">
+      <span class="lbl">下に入れる文字(2行まで)</span>
+      <textarea id="in-sub" maxlength="80" data-save placeholder="例:&#10;11/3 秋まつり 焼きそば&#10;番号を呼ばれたらお越しください">番号を呼ばれたらお越しください</textarea>
+      <span class="hint" id="subHint">イベント名・日時・注意書きなど。3行目からは入りません</span>
+    </label>
+    <label class="field">
+      <span class="lbl">色</span>
+      <select id="in-theme" data-save>
+        <option value="simple">シンプル(黒)</option>
+        <option value="pink">かわいい(ピンク)</option>
+        <option value="wa">和風(えんじ)</option>
+        <option value="blue">青</option>
+        
+      </select>
+    </label>
+    
+  </section>
+
+  <section class="card" id="print-card">
+    <h2>③ A4への並べ方</h2>
+    <label class="field">
+      <span class="lbl">A4 1枚に</span>
+      <select id="in-per" data-save>
+        <option value="8">8枚(2列×4段・大きめ)</option>
+        <option value="10" selected>10枚(2列×5段・名刺くらい)</option>
+        <option value="12">12枚(3列×4段)</option>
+        <option value="21">21枚(3列×7段・小さめ)</option>
+        <option value="40">40枚(4列×10段・番号札向けの小さいサイズ)</option>
+      </select>
+    </label>
+  </section>
+
+</div>
+<div class="col-pv">
+  <section class="card" id="result-card">
+    <h2>④ 見本と印刷</h2>
+    <div class="preview" id="preview"></div>
+    <div class="info" id="info"></div>
+    <div class="btn-row">
+      <button class="btn primary" type="button" id="printBtn">印刷する(PDF保存もここから)</button>
+    </div>
+    <div class="status" id="st" role="status"></div>
+    <p class="fine">印刷画面で「用紙サイズ: A4」「倍率: 100%(実際のサイズ)」にしてください。点線で切り分けます。PDFにしたいとき: パソコン・Androidはプリンターの選択で「PDFに保存」、iPhoneは印刷画面の共有ボタンから「"ファイル"に保存」。PDFはコンビニのプリントサービスでも印刷できます。</p>
+  </section>
+</div>
+</div>
+
+  <section class="card" id="pro-section">
+    <h2>半券(控え)つき・呼び出し画面も <span class="badge">買い切り版 ¥100(税込)</span></h2>
+    <div class="locked-panel">
+      <p class="lead">整理券を作るだけでなく、当日の番号呼び出しまで。</p>
+      <p>このページの機能は無料でそのまま使えます。買い切り版(ダウンロード購入)では、次の機能が増えます:</p>
+      <ul class="feat-list">
+        <li><strong>半券(控え)つき</strong>: 右側に同じ番号の控えを入れ、点線で切り取れます(受付の控え・抽選券に)</li>
+        <li><strong>呼び出し画面</strong>: 今の番号を大きく表示(全画面OK)、ボタンやキーボードで次へ・戻る。途中で閉じても続きから</li>
+        <li><strong>4と9を含む番号を飛ばす</strong>(縁起を気にするお店・病院の番号札に)</li>
+        <li><strong>好きな色</strong>と、<strong>1回に1,000枚まで</strong>(無料版は1回100枚まで)</li>
+        <li><strong>パソコンで使うHTMLファイルです</strong>(スマホでの動作は保証していません)。ダブルクリックで開くだけ、ネットにつながっていなくても使えます</li>
+      </ul>
+<!--UPSELL_ASSURE_START--><ul class="upsell-assure" aria-label="買い切り版について"><li>¥100(税込)の1回払い・月額なし</li><li>パソコン向けのHTMLファイル(スマホでは開けない機種あり)</li><li>ネットにつながっていなくても動く</li><li>BOOTHで購入(クレジットカード・楽天ペイは手数料なし、コンビニ・銀行払いは別途手数料)</li></ul><!--UPSELL_ASSURE_END-->
+      <a class="buy-btn" href="https://uuhai0625.booth.pm/items/9209760" id="buyLink" target="_blank" rel="noopener">買い切り版を見る(BOOTH・新しいタブ)</a><!--UPSELL_TERMS_START--><p class="upsell-terms">販売者の情報・返品などの販売条件は、BOOTHの商品ページでご確認ください。BOOTHでの購入にはpixivのアカウントが必要です。</p><!--UPSELL_TERMS_END-->
+    </div>
+  </section>
+
+  
+
+  <section class="card guide" id="guide">
+    <h2>整理券の作り方</h2>
+    <ol>
+      <li>①ではじめの番号と枚数を決めます。「No.001」のような形にしたいときは、前につける文字とけた数を選びます。</li>
+      <li>②でいちばん上の文字(整理券・番号札など)と、下に入れる文字(イベント名・注意書き)、色を選びます。</li>
+      <li>③でA4 1枚に何枚並べるかを選び、「印刷する」で印刷して点線で切り分けます。</li>
+    </ol>
+    <h2 style="margin-top:16px;">整理券のよくある疑問</h2>
+    <ul>
+      <li><strong>番号は全部ちがう?</strong> はじめの番号から1つずつ増える通し番号です。同じ設定なら、何度印刷しても同じ番号になります(続きを作るときは、はじめの番号を変えます)。</li>
+      <li><strong>厚い紙に印刷できる?</strong> プリンターが対応する厚さなら、A4の厚口用紙(マット紙など)に印刷すると切りやすく丈夫です。</li>
+      <li><strong>使い回しを防ぐには?</strong> 下の文字に日付やイベント名を入れる、色を毎回変える、のが手軽です。</li>
+      <li><strong>番号札(くり返し使う札)にしたい</strong>: 21枚並べ(約6×3.6cm)や40枚並べ(約4.5×2.5cm)を厚紙に印刷し、ラミネートすると何度も使えます。</li>
+      <li><strong>抽選券として使うとき</strong>: お店の販促で抽選をする場合は、景品表示法の景品の上限額に注意してください。参加者からお金を集めて景品を分けるくじは、刑法の富くじにあたるおそれがあるので避けましょう。</li>
+    </ul>
+  </section>
+
+</main>
+
+<!--ANSHIN_START-->
+<section class="anshin" id="anshin" aria-labelledby="anshin-title">
+  <h2 id="anshin-title">データの扱いについて</h2>
+  <p>このページには、入力した内容を受け取る仕組みがありません。入力した文字や数字は、あなたのスマホやパソコンの中だけで処理されます。</p>
+  <ul>
+    <li>会員登録・ログイン・メールアドレスの入力はありません。</li>
+    <li>自分で確かめたい方へ: ページを開いたあと機内モードにしても、そのまま使えます。</li>
+  </ul>
+  <details>
+    <summary>もっとくわしく(保存・アクセス解析・公開について)</summary>
+    <ul>
+      <li>保存されるデータは、この端末のこのブラウザの中にだけ残ります(localStorage・sessionStorage)。共用のパソコンでは使い終わったら消してください。</li>
+      <li>アクセス解析(Google Analytics)のため、見たページのURL・参照元・端末やブラウザの種類・おおよその地域(IPアドレスから推定)・Cookieの識別子・BOOTHへのリンクのクリック・どのボタンを押したか(回数や選んだ設定を含む)がGoogleに送られます。目的は利用状況の把握です。入力した文字や画像は送りません。(<a href="https://policies.google.com/technologies/partner-sites?hl=ja" target="_blank" rel="noopener">Googleによるデータの使用</a>/<a href="https://tools.google.com/dlpage/gaoptout?hl=ja" target="_blank" rel="noopener">計測を止めるアドオン</a>。止めてもツールはそのまま使えます)</li>
+      <li>このツールの結果や作成物は目安です。入稿・契約・販売などの前には、印刷所や公式の情報でご確認ください。</li>
+      <li>処理の中身はすべて公開しています(詳しい方向け: <a href="https://github.com/uuhai0625/seiriken-maker" target="_blank" rel="noopener">GitHub</a>)。</li>
+    </ul>
+  </details>
+  <p class="anshin-meta">作っている人: ウーハイ(個人開発)/不具合・ご質問は<a href="https://x.com/uuhai0625" target="_blank" rel="noopener">X(@uuhai0625)</a>へ/<a href="https://uuhai0625.github.io/" target="_blank" rel="noopener">ほかのツール</a>/この説明の更新日: 2026-10-13</p>
+</section>
+<!--ANSHIN_END-->
+
+<footer>
+  <p id="privacyNote">本ツールは完全にブラウザ内で動作し、入力した内容はどこにも送信されません。</p>
+  <p><a href="https://uuhai0625.booth.pm/" target="_blank" rel="noopener">他のツールも見る(BOOTHショップ)</a></p>
+  <p>不具合・ご要望は X <a href="https://x.com/uuhai0625" target="_blank" rel="noopener">@uuhai0625</a> まで。</p>
+  <p class="related-tools no-print">関連する無料ツール: <a href="https://uuhai0625.github.io/nefuda-maker/" target="_blank" rel="noopener">値札メーカー</a> ・ <a href="https://uuhai0625.github.io/bingo-card-maker/" target="_blank" rel="noopener">ビンゴカードメーカー</a> ・ <a href="https://uuhai0625.github.io/amidakuji-maker/" target="_blank" rel="noopener">あみだくじメーカー</a> ・ <a href="https://uuhai0625.github.io/#free-tools">ツール一覧</a></p>
+</footer>
+
+<div id="printArea"></div>
+
+<script>
+(function () {
+  "use strict";
+
+  var EDITION = "free"; // "full" で買い切り完全版
+
+  function track(name, params) {
+    if (!window.dataLayer) return;
+    (function () { window.dataLayer.push(arguments); })("event", name, params || {});
+  }
+  var $ = function (id) { return document.getElementById(id); };
+  function el(tag, attrs, text) {
+    var e = document.createElement(tag);
+    if (attrs) Object.keys(attrs).forEach(function (k) { if (k === "class") e.className = attrs[k]; else e.setAttribute(k, attrs[k]); });
+    if (text != null) e.textContent = text;
+    return e;
+  }
+  function setSt(id, msg, err) { var e = $(id); e.textContent = msg; e.classList.toggle("err", !!err); }
+
+  var MAX_COUNT = 100;
+  var LIMIT_NOTE = "無料版で作れるのは100枚までです(買い切り版は1,000枚まで)。";
+  var LAST_KEY = "seiriken_last_v1";
+  var A4 = [210, 297], MARGIN = 8;
+  // A4 1枚の並べ方: [列, 行](すべてA4たて)
+  var PER = { "8": [2, 4], "10": [2, 5], "12": [3, 4], "21": [3, 7], "40": [4, 10] };
+
+  // 買い切り版で差し替えるフック(無料版では何もしない)
+  var extendSettings = function (s) { return s; };
+  var syncExtra = function () {};
+
+  // ===== 設定 =====
+  function intVal(id, def, min, max) {
+    var raw = String($(id).value).trim();
+    var v = raw === "" ? def : Math.round(Number(raw));
+    if (!isFinite(v)) v = def;
+    return Math.max(min, Math.min(max, v));
+  }
+  function subLines() {
+    return String($("in-sub").value || "").split(/\r?\n/).map(function (x) { return x.replace(/\s+/g, " ").trim(); }).filter(Boolean).slice(0, 2);
+  }
+  function settings() {
+    var s = {
+      start: intVal("in-start", 1, 0, 99999),
+      count: intVal("in-count", 50, 1, MAX_COUNT),
+      prefix: $("in-prefix").value.trim().slice(0, 6),
+      digits: /^[0234]$/.test($("in-digits").value) ? Number($("in-digits").value) : 3,
+      title: $("in-title").value.trim().slice(0, 16),
+      sub: subLines(),
+      theme: $("in-theme").value,
+      color: "",
+      per: PER[$("in-per").value] ? $("in-per").value : "10",
+      skip49: false,
+      stub: false,
+      stubLabel: ""
+    };
+    s = extendSettings(s);
+    if (!/^(simple|pink|wa|blue|custom)$/.test(s.theme)) s.theme = "simple";
+    return s;
+  }
+  function fmt(s, n) {
+    var t = String(n);
+    if (s.digits && t.length < s.digits) t = ("0000" + t).slice(-s.digits);
+    return t;
+  }
+  // 使う番号の一覧(4と9を飛ばすときは、飛ばした分だけ先へ進む)
+  function numbers(s) {
+    var out = [], n = s.start;
+    while (out.length < s.count && n <= 99999) {
+      if (!(s.skip49 && /[49]/.test(String(n)))) out.push(n);
+      n++;
+    }
+    return out;
+  }
+
+  // 文字の幅(em)のおおよそ: 半角0.62、全角1.0
+  function textUnits(str, k) {
+    return Array.from(str).reduce(function (a, c) { return a + (c.charCodeAt(0) < 0x2000 ? 0.62 : 1.0); }, 0) * k + Array.from(str).length * 0.02;
+  }
+  function stubWidth(s, w, h) { return s.stub ? Math.min(w * 0.28, h * 1.1) : 0; }
+  // 文字の大きさ(mm)をまとめて決める(見本・印刷・小さすぎる警告で共通)
+  function fonts(s, n, w, h) {
+    var mw = w - stubWidth(s, w, h), base = Math.min(h, mw * 0.62);
+    var num = fmt(s, n), pre = s.prefix;
+    var units = textUnits(num, 1) + (pre ? textUnits(pre, 0.42) + 0.06 : 0);
+    var longest = s.sub.length ? Math.max.apply(null, s.sub.map(function (x) { return textUnits(x, 1); })) : 1;
+    return {
+      base: base,
+      title: Math.min(base * 0.15, mw * 0.8 / (textUnits(s.title, 1) + 1.2)),
+      no: Math.min(base * (s.sub.length ? 0.4 : 0.5), mw * 0.86 / Math.max(units, 1)),
+      sub: Math.min(base * 0.085, mw * 0.88 / Math.max(longest, 1))
+    };
+  }
+
+  // ===== 整理券のDOM(印刷と見本で共通。w・h は mm) =====
+  function ticketEl(s, n, w, h) {
+    var tk = el("div", { class: "tk t-" + s.theme });
+    if (s.theme === "custom" && s.color) tk.style.setProperty("--cc", s.color);
+    tk.style.width = w + "mm"; tk.style.height = h + "mm";
+    var stubW = stubWidth(s, w, h);
+    var mw = w - stubW;
+    var main = el("div", { class: "main" });
+    var f = fonts(s, n, w, h);
+    if (s.title) {
+      var t = el("div", { class: "tt" }, s.title);
+      t.style.fontSize = f.title + "mm";
+      main.appendChild(t);
+    }
+    var num = fmt(s, n), pre = s.prefix;
+    var no = el("div", { class: "no" });
+    if (pre) no.appendChild(el("small", null, pre));
+    no.appendChild(document.createTextNode(num));
+    no.style.fontSize = f.no + "mm";
+    no.style.margin = (f.base * 0.03) + "mm 0";
+    main.appendChild(no);
+    if (s.sub.length) {
+      var sub = el("div", { class: "sub" });
+      s.sub.forEach(function (x) { sub.appendChild(el("div", null, x)); });
+      sub.style.fontSize = f.sub + "mm";
+      main.appendChild(sub);
+    }
+    tk.appendChild(main);
+    if (s.stub) {
+      var st = el("div", { class: "stub" });
+      st.style.width = stubW + "mm";
+      var sl = el("div", { class: "sl" }, s.stubLabel);
+      sl.style.fontSize = Math.min(h * 0.11, stubW * 0.8 / Math.max(Array.from(s.stubLabel).length, 1)) + "mm";
+      var sn = el("div", { class: "sn" }, pre + num);
+      sn.style.fontSize = Math.min(h * 0.3, stubW * 0.86 / Math.max(textUnits(pre + num, 1), 1)) + "mm";
+      if (s.stubLabel) st.appendChild(sl);
+      st.appendChild(sn);
+      tk.appendChild(st);
+    }
+    return tk;
+  }
+  function slotSize(s) {
+    var p = PER[s.per];
+    return [(A4[0] - 2 * MARGIN) / p[0], (A4[1] - 2 * MARGIN) / p[1]];
+  }
+  function ticketSize(s) {
+    var sz = slotSize(s), gap = s.per === "40" ? 3 : 4;
+    return [Math.floor(sz[0] - gap), Math.floor(sz[1] - gap)];
+  }
+
+  // ===== 画面 =====
+  var lastRun = null;
+  function render() {
+    var s = settings();
+    syncExtra(s); saveLast();
+    var pv = $("preview"), info = $("info");
+    pv.innerHTML = ""; info.textContent = "";
+    var nums = numbers(s);
+    $("printBtn").disabled = !nums.length;
+    if (!nums.length) { info.appendChild(el("span", { class: "err" }, "番号が作れません。はじめの番号を小さくしてください。")); lastRun = null; return; }
+    lastRun = { s: s, nums: nums };
+    var sz = ticketSize(s), box = (pv.clientWidth - 30) || 300;
+    var scale = Math.min(box / 3.78 / sz[0], 2.2, 90 / sz[0]);
+    pv.appendChild(ticketEl(s, nums[0], sz[0] * scale, sz[1] * scale));
+    var pages = Math.ceil(nums.length / Number(s.per));
+    var msg = "見本は1枚目です。" + s.prefix + fmt(s, nums[0]) + "〜" + s.prefix + fmt(s, nums[nums.length - 1]) + "の" + nums.length + "枚(A4 " + pages + "ページ、1枚 約" + (sz[0] / 10).toFixed(1) + "×" + (sz[1] / 10).toFixed(1) + "cm)を印刷します。";
+    if (nums.length < s.count) msg += " 99999番をこえるため、" + nums.length + "枚までにしました。";
+    if (s.digits && String(nums[nums.length - 1]).length > s.digits) msg += " けた数より大きい番号は、そのままのけた数で入ります。";
+    var f = fonts(s, nums[nums.length - 1], sz[0], sz[1]);
+    if ((s.title && f.title < 2) || (s.sub.length && f.sub < 2)) msg += " 文字が長いので、印刷すると" + (s.sub.length && f.sub < 2 ? "下の文字" : "いちばん上の文字") + "がとても小さくなります(2mm未満)。文字を短くするか、A4に並べる枚数を減らしてください。";
+    info.textContent = msg;
+  }
+  var rTimer = null;
+  function onSetting() { clearTimeout(rTimer); rTimer = setTimeout(render, 120); }
+
+  // ===== 印刷 =====
+  var pageStyle = null;
+  function buildPrint() {
+    if (!lastRun) return false;
+    var s = lastRun.s, nums = lastRun.nums, p = PER[s.per], per = p[0] * p[1];
+    var sl = slotSize(s), sz = ticketSize(s);
+    var area = $("printArea");
+    area.innerHTML = "";
+    if (!pageStyle) { pageStyle = el("style"); document.head.appendChild(pageStyle); }
+    pageStyle.textContent = "@page { size: A4 portrait; margin: 0; } #printArea .page { width: " + A4[0] + "mm; height: " + A4[1] + "mm; padding: " + MARGIN + "mm; grid-template-columns: repeat(" + p[0] + ", " + sl[0] + "mm); grid-template-rows: repeat(" + p[1] + ", " + sl[1] + "mm); }";
+    for (var i = 0; i < nums.length; i += per) {
+      var page = el("div", { class: "page" });
+      for (var j = 0; j < per; j++) {
+        var slot = el("div", { class: "slot" });
+        if (i + j < nums.length) slot.appendChild(ticketEl(s, nums[i + j], sz[0], sz[1]));
+        page.appendChild(slot);
+      }
+      area.appendChild(page);
+    }
+    return true;
+  }
+  $("printBtn").addEventListener("click", function () {
+    if (!buildPrint()) return;
+    var s = lastRun.s, nums = lastRun.nums;
+    setSt("st", "印刷画面を開きました。用紙はA4、倍率は「100%」がおすすめです。");
+    track("seiriken_print", { count: nums.length, per: s.per, stub: s.stub ? 1 : 0, skip49: s.skip49 ? 1 : 0 });
+    setTimeout(function () { window.print(); }, 50);
+  });
+  // ボタンを使わずに印刷(Ctrl+P)したときも白紙にしない
+  window.addEventListener("beforeprint", function () { if (!$("printArea").children.length) buildPrint(); });
+  window.addEventListener("afterprint", function () { $("printArea").innerHTML = ""; });
+
+  // ===== 設定の記憶(このブラウザだけ) =====
+  function snapshot() {
+    var o = {};
+    document.querySelectorAll("[data-save]").forEach(function (e) {
+      if (e.type === "checkbox") o[e.id] = e.checked; else o[e.id] = e.value;
+    });
+    return o;
+  }
+  function applySnap(o) {
+    if (!o || typeof o !== "object") return;
+    document.querySelectorAll("[data-save]").forEach(function (e) {
+      if (e.type === "checkbox") { if (typeof o[e.id] === "boolean") e.checked = o[e.id]; return; }
+      if (typeof o[e.id] !== "string") return;
+      var v = o[e.id].slice(0, e.tagName === "TEXTAREA" ? 80 : 16);
+      if (e.tagName === "SELECT" && ![].some.call(e.options, function (op) { return op.value === v; })) return;
+      if (e.type === "color" && !/^#[0-9a-f]{6}$/i.test(v)) return;
+      e.value = v;
+    });
+  }
+  var saveTimer = null;
+  function saveLast() {
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(function () { try { localStorage.setItem(LAST_KEY, JSON.stringify(snapshot())); } catch (e) {} }, 300);
+  }
+  try { applySnap(JSON.parse(localStorage.getItem(LAST_KEY) || "null")); } catch (e) {}
+
+  document.querySelectorAll("[data-save]").forEach(function (e) {
+    e.addEventListener(e.type === "text" || e.type === "number" || e.tagName === "TEXTAREA" || e.type === "color" ? "input" : "change", onSetting);
+    if (e.type === "number") e.addEventListener("change", function () {
+      // 入れ終わったら、実際に使う値(範囲内)に直して見せる
+      var max = e.id === "in-count" ? MAX_COUNT : Number(e.max);
+      if (e.id === "in-count") setSt("st", Number(e.value) > MAX_COUNT ? LIMIT_NOTE : "", Number(e.value) > MAX_COUNT);
+      e.value = String(intVal(e.id, Number(e.defaultValue), Number(e.min), max)); onSetting();
+    });
+  });
+
+  
+
+  if (EDITION !== "full") {
+    $("privacyNote").innerHTML = '入力した内容はどこにも送信されません(すべてこのブラウザの中で処理します)。このページでは利用状況の把握のためにアクセス解析(Google Analytics)を使っています。<a href="https://policies.google.com/technologies/partner-sites?hl=ja" target="_blank" rel="noopener">Googleによるデータの使用について</a>';
+  }
+  window.addEventListener("resize", onSetting);
+  render();
+})();
+</script>
+<!--UPSELL_JS_START-->
+<script>
+(function () {
+  "use strict";
+  var q = new URLSearchParams(location.search);
+  if (q.get("obs") === "1" || document.documentElement.classList.contains("obs")) return;
+  // 小さな案内(トースト)は、買い切り版がパソコン向けなので、マウス操作の広い画面でだけ出す
+  var pc = !!(window.matchMedia && matchMedia("(pointer:fine) and (min-width:720px)").matches);
+  var buy = document.getElementById("buyLink");
+  var pro = document.getElementById("pro-section");
+  if (!buy || !pro) return;
+  var FEATS = [], CALM = false;
+  var path = location.pathname.replace(/index\.html$/, "");
+  var KEY_CLOSED = "upsell_closed_until:" + path, KEY_SHOWN = "upsell_shown:" + path;
+  function store(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } }
+  function sess(k, v) { try { if (v === undefined) return sessionStorage.getItem(k); sessionStorage.setItem(k, v); } catch (e) { return null; } }
+  function gtagEv(name, p) { if (!window.dataLayer) return; (function () { window.dataLayer.push(arguments); })("event", name, p || {}); }
+
+  var shown = false;
+  function blocked() {
+    if (shown || sess(KEY_SHOWN) === "1") return true;
+    var until = Number(store(KEY_CLOSED) || 0);
+    return until && Date.now() < until;
+  }
+  function feats() {
+    if (FEATS.length) return FEATS;
+    var out = [];
+    var lis = pro.querySelectorAll(".feat-list li");
+    for (var i = 0; i < lis.length && out.length < 3; i++) {
+      var all = lis[i].textContent.replace(/\s+/g, " ").trim();
+      if (/スマホ|HTMLファイル|パソコンで使う/.test(all)) continue;
+      var st = lis[i].querySelectorAll("strong");
+      var t = st.length === 1 ? st[0].textContent : all.split(/[::。]/)[0];
+      t = t.replace(/[((][^()()]*[))]/g, "").replace(/\s+/g, " ").trim();
+      if (t.length > 40) t = t.slice(0, 39) + "…";
+      if (t) out.push(t);
+    }
+    return out;
+  }
+  // 「〜してください」「できません」など、失敗の表示が出ていたら案内しない
+  function failed() {
+    var els = document.querySelectorAll('[role="status"], [role="alert"], [aria-live]');
+    for (var i = 0; i < els.length; i++) {
+      if (pro.contains(els[i]) || !els[i].offsetParent) continue;
+      if (/ください|できません|できませんでした|失敗|ありません|エラー/.test(els[i].textContent)) return true;
+    }
+    return false;
+  }
+  function proVisible() {
+    var r = pro.getBoundingClientRect();
+    return r.top < innerHeight && r.bottom > 0;
+  }
+  function show(trigger) {
+    if (!pc || blocked() || (trigger === "action" && failed()) || proVisible()) return;
+    var list = feats();
+    if (!list.length) return;
+    shown = true;
+    sess(KEY_SHOWN, "1");
+    var box = document.createElement("aside");
+    box.className = "upsell-toast" + (CALM ? " upsell-calm" : "");
+    box.setAttribute("aria-label", "買い切り版のご案内");
+    box.setAttribute("aria-live", "polite");
+    document.body.appendChild(box);
+    var p = document.createElement("p");
+    p.textContent = trigger === "limit" && CALM ? "件数が多いときは、パソコン用の買い切り版(¥100・税込)で続けられます:"
+      : trigger === "limit"
+      ? "この先は買い切り版の機能です。パソコン用の買い切り版(¥100・税込)なら:"
+      : CALM ? "件数が多いときや、香典返しの準備をまとめたいときのために、パソコン用の買い切り版(¥100・税込)もあります:" : "うまくできましたか? パソコン用の買い切り版(¥100・税込)なら、さらに:";
+    var ul = document.createElement("ul");
+    list.forEach(function (t) { var li = document.createElement("li"); li.textContent = t; ul.appendChild(li); });
+    var a = document.createElement("a");
+    a.className = "upsell-go";
+    a.id = "upsellToastLink";
+    a.href = buy.href;
+    a.target = "_blank";
+    a.rel = "noopener";
+    a.textContent = "BOOTHで見る(新しいタブ)";
+    var bg = getComputedStyle(buy).backgroundColor;
+    if (bg && !/rgba?\(0, 0, 0, 0\)|transparent/.test(bg)) a.style.background = bg;
+    var x = document.createElement("button");
+    x.type = "button";
+    x.className = "upsell-x";
+    x.setAttribute("aria-label", "この案内を閉じる");
+    x.textContent = "×";
+    function close(remember) {
+      if (box.parentNode) box.parentNode.removeChild(box);
+      document.removeEventListener("keydown", onKey);
+      if (remember) store(KEY_CLOSED, String(Date.now() + 7 * 864e5));
+    }
+    // Escはページ側の操作(選択解除など)にも使われるので、案内の中にフォーカスがある時だけ閉じる
+    function onKey(e) { if (e.key === "Escape" && box.contains(document.activeElement)) close(true); }
+    x.addEventListener("click", function () { close(true); });
+    a.addEventListener("click", function () { setTimeout(function () { close(false); }, 0); });
+    document.addEventListener("keydown", onKey);
+    setTimeout(function () {
+      var note = document.createElement("small");
+      note.className = "upsell-note";
+      note.textContent = "スマホではファイルを開けない機種があります";
+      box.appendChild(x); box.appendChild(p); box.appendChild(ul); box.appendChild(a); box.appendChild(note);
+    }, 50);
+    gtagEv("upsell_show", { trigger: trigger });
+  }
+
+  // 保存・コピー・印刷・書き出しを押した直後(結果を受け取れたタイミング)
+  var OK = /保存|コピー|印刷|書き出|ダウンロード|共有|PDF/;
+  var NG = /読み込|リセット|消|削除|このブラウザに保存|確認|イメージを見る|戻/;
+  document.addEventListener("click", function (e) {
+    var el = e.target && e.target.closest ? e.target.closest("button, a[download], input[type=button], input[type=submit]") : null;
+    if (!el || el.closest("#pro-section, .upsell-toast, #anshin")) return;
+    var label = (el.textContent || el.value || "").replace(/\s+/g, " ");
+    if (!OK.test(label) || NG.test(label)) return;
+    setTimeout(function () { show("action"); }, 1500);
+  }, true);
+
+  // 無料版の上限まわり
+  // (1) ページが出す「買い切り版」の一文に、購入欄へのリンクを足す(スマホでも)。🔒のタブは薄く表示されているので入れない
+  // (2) 案内(パソコンのみ)は、はっきりした合図のときだけ出す: 🔒のクリック・買い切り版にふれたalert・
+  //     初めて出た「〜まで/のみ/以降/入っていません」の上限の一文(計算のたびに出る誘導文や、同じ文の描き直しでは出さない)
+  var SKIP = "#pro-section, .upsell-toast, .upsell-top, #anshin, a, button, label, select, option, h1, h2, h3, .badge, header, footer, nav, textarea, pre, code, [contenteditable], svg";
+  var LIMIT = /まで|のみ|以降|入っていません/;
+  var seenText = {}, ready = false;
+  function goPro(e) {
+    if (e) e.preventDefault();
+    pro.setAttribute("tabindex", "-1");
+    pro.scrollIntoView({ behavior: "smooth", block: "start" });
+    pro.focus({ preventScroll: true });
+  }
+  function linkify(root, deep) {
+    var limitHit = false;
+    var els = root.matches("p, div, span, li") ? [root] : [];
+    if (deep) els = els.concat([].slice.call(root.querySelectorAll("p, div, span, li")));
+    els.forEach(function (el) {
+      if (el.closest(SKIP) || el.closest('[role="radio"], [role="option"], [role="tab"], [role="button"], [tabindex]:not([tabindex="-1"])') || el.querySelector("a, button, p, div, li, input, label")) return;
+      // 選択肢の「○○(買い切り版)」ではなく、文として買い切り版にふれている要素だけ
+      var own = "";
+      for (var n = el.firstChild; n; n = n.nodeType === 1 && n.className === "upsell-inline" ? null : n.nextSibling) if (n.nodeType === 3) own += n.nodeValue;
+      own = own.trim();
+      if (own.indexOf("買い切り版") < 0 || /[((]買い切り版[))]$/.test(own) || /^🔒/.test(own)) return;
+      var key = own.replace(/\d+/g, "#");
+      if (ready && !seenText[key] && LIMIT.test(own) && !el.closest(".teaser, #teaser, [id$=teaser], #tz")) limitHit = true;
+      seenText[key] = 1;
+      if (el.querySelector(".upsell-inline")) return;
+      var a = document.createElement("a");
+      a.className = "upsell-inline";
+      a.href = "#pro-section";
+      a.setAttribute("aria-label", "くわしく:買い切り版の説明へ移動");
+      a.textContent = "くわしく";
+      var ar = document.createElement("span");
+      ar.setAttribute("aria-hidden", "true");
+      ar.textContent = " ↓";
+      a.appendChild(ar);
+      a.addEventListener("click", goPro);
+      el.appendChild(document.createTextNode(" "));
+      el.appendChild(a);
+    });
+    return limitHit;
+  }
+  linkify(document.body, true);
+  setTimeout(function () { ready = true; }, 1500);
+  var topLink = document.querySelector("#upsellTop a");
+  if (topLink) topLink.addEventListener("click", goPro);
+  new MutationObserver(function (ms) {
+    // 変わったところだけを調べる(足された要素はその中も、文字の変更は親要素だけ)
+    var hit = false, done = new Set();
+    function check(t, deep) {
+      if (!t || t.nodeType !== 1 || done.has(t) || t.closest(".upsell-toast")) return;
+      done.add(t);
+      if (linkify(t, deep)) hit = true;
+    }
+    ms.forEach(function (m) {
+      if (m.type === "characterData") { check(m.target.parentNode, false); return; }
+      check(m.target, false);
+      for (var i = 0; i < m.addedNodes.length; i++) if (m.addedNodes[i].nodeType === 1) check(m.addedNodes[i], true);
+    });
+    if (hit) setTimeout(function () { show("limit"); }, 800);
+  }).observe(document.body, { childList: true, subtree: true, characterData: true });
+  document.addEventListener("click", function (e) {
+    var el = e.target && e.target.closest ? e.target.closest("button, div, span, li") : null;
+    var first = el && el.firstChild && el.firstChild.nodeType === 3 ? el.firstChild.nodeValue : "";
+    if (!/^\s*🔒/.test(first) || e.target.closest("#pro-section")) return;
+    if (pc) setTimeout(function () { show("limit"); }, 300); else goPro();
+  }, true);
+  var origAlert = window.alert;
+  window.alert = function (msg) {
+    var r = origAlert.apply(window, arguments);
+    if (/買い切り版/.test(String(msg))) setTimeout(function () { show("limit"); }, 300);
+    return r;
+  };
+})();
+</script>
+<!--UPSELL_JS_END-->
+</body>
+</html>
